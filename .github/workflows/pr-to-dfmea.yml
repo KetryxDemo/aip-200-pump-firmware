@@ -1,0 +1,36 @@
+name: PR to DFMEA
+
+# Each pull request becomes a Change Request in Ketryx. The "PR to DFMEA"
+# agent in Ketryx picks up new and changed CRs and posts its DFMEA verdict
+# (covered / broaden an existing DFMEA / new DFMEA) on the CR.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  change-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create or update the Ketryx change request
+        id: cr
+        env:
+          KETRYX_URL: https://demo.ketryx.com
+          KETRYX_PROJECT: ${{ vars.KETRYX_PROJECT }}
+          KETRYX_API_KEY: ${{ secrets.KETRYX_API_KEY }}
+        run: python3 .github/scripts/pr_to_ketryx.py
+      - name: Link the change request on the PR
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "Ketryx change request opened: ${{ steps.cr.outputs.item_url }}
+
+          The PR to DFMEA agent will assess this change against the DFMEAs and post its verdict on the change request in a few minutes."
