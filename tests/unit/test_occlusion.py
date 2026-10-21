@@ -21,3 +21,7 @@ def test_transient_rejected():
     spike = threshold_kpa(5) * 3
     fired = [d.update(spike if t < 3 else 10.0) for t in range(30)]
     assert not any(fired)
+
+
+def test_low_rate_alarm_under_45s():
+    assert seconds_to_alarm(1) <= 45

@@ -7,8 +7,8 @@ PERSISTENCE_S seconds, which rejects transients from patient movement.
 """
 from collections import deque
 
-FILTER_WINDOW = 5          # samples (1 Hz)
-PERSISTENCE_S = 10         # seconds above threshold before alarm
+FILTER_WINDOW = 3          # samples (1 Hz); shorter window = faster response at low rates
+PERSISTENCE_S = 8          # seconds above threshold before alarm
 BASE_THRESHOLD_KPA = 40.0  # at 1 mL/h
 RATE_GAIN_KPA = 0.12       # added per mL/h
 
