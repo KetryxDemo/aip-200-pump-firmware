@@ -15,6 +15,7 @@ LIBRARY = {
     "morphine": DrugEntry("morphine", 1.0, 10.0, 15.0, 2.0),
     "hydromorphone": DrugEntry("hydromorphone", 0.2, 5.0, 8.0, 1.0),
     "saline": DrugEntry("saline", 0.0, 250.0, 500.0, 0.0),
+    "dopamine": DrugEntry("dopamine", 1.6, 30.0, 45.0, 0.0),
 }
 
 
